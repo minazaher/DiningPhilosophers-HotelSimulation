@@ -1,7 +1,7 @@
 package com.example.diningphilosopher.Activity;
 
 
-import static com.example.diningphilosopher.Activity.RoomsAdapter.ROOM_CURSOR;
+import static com.example.diningphilosopher.RoomsAdapter.ROOM_CURSOR;
 import static com.example.diningphilosopher.ApplicationClass.CAR_FLAG;
 import static com.example.diningphilosopher.ApplicationClass.ROOM_FLAG;
 import static com.example.diningphilosopher.ApplicationClass.RoomIDs;
@@ -15,7 +15,6 @@ import static java.lang.Integer.parseInt;
 
 import android.annotation.SuppressLint;
 import android.os.Bundle;
-import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -31,10 +30,10 @@ import com.example.diningphilosopher.CarAdapter;
 import com.example.diningphilosopher.Model.Car;
 import com.example.diningphilosopher.Model.Room;
 import com.example.diningphilosopher.R;
+import com.example.diningphilosopher.RoomsAdapter;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
-import com.google.firebase.firestore.FieldValue;
 
 import java.util.concurrent.Semaphore;
 import java.util.concurrent.atomic.AtomicInteger;

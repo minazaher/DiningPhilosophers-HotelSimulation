@@ -1,4 +1,4 @@
-package com.example.diningphilosopher.Activity;
+package com.example.diningphilosopher;
 
 import static com.example.diningphilosopher.ApplicationClass.ROOM_FLAG;
 import static com.example.diningphilosopher.ApplicationClass.currentUser;
@@ -11,18 +11,14 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
-import com.example.diningphilosopher.ApplicationClass;
 import com.example.diningphilosopher.Model.Room;
-import com.example.diningphilosopher.R;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
-import com.google.firebase.firestore.FieldValue;
 
 import java.util.ArrayList;
 
@@ -76,8 +72,6 @@ public class RoomsAdapter extends RecyclerView.Adapter<RoomsAdapter.viewholder> 
                     if (count[0] > 0){
                         ROOM_FLAG = true;
                         ROOM_CURSOR = i;
-//                        db.collection("Resources").document(String.valueOf(i))
-//                                .update("Semaphore", FieldValue.increment(-1));
                         System.out.println(currentUser.getName() + "Clicked ");
                     }
                 }

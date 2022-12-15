@@ -1,17 +1,12 @@
 package com.example.diningphilosopher.Model;
 
 
-import static com.example.diningphilosopher.Activity.RoomsAdapter.ROOM_CURSOR;
+import static com.example.diningphilosopher.RoomsAdapter.ROOM_CURSOR;
 import static com.example.diningphilosopher.ApplicationClass.db;
 import static com.example.diningphilosopher.CarAdapter.CAR_CURSOR;
 
-import android.widget.Toast;
-
-import com.example.diningphilosopher.Activity.ReservationActivity;
 import com.example.diningphilosopher.ApplicationClass;
 import com.google.firebase.firestore.FieldValue;
-
-import java.util.Random;
 
 public class Customer extends Thread {
 
