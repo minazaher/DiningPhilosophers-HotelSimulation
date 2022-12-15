@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "1086859995708",
+    "project_id": "hotel-4f38d",
+    "storage_bucket": "hotel-4f38d.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1086859995708:android:2fc061e6dc98f3dc68b139",
+        "android_client_info": {
+          "package_name": "com.example.diningphilosopher"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1086859995708-ao0o244v4p8ioq1h489fddhsrdk2js58.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDUGaIKL4fuAdgf878ouESo-SDX0xt3HzU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1086859995708-ao0o244v4p8ioq1h489fddhsrdk2js58.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
