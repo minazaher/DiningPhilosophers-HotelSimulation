@@ -1,5 +1,11 @@
 package com.example.diningphilosopher.Model;
 
+import static com.example.diningphilosopher.ApplicationClass.db;
+import static com.example.diningphilosopher.CarAdapter.CAR_CURSOR;
+import static com.example.diningphilosopher.RoomsAdapter.ROOM_CURSOR;
+
+import com.google.firebase.firestore.FieldValue;
+
 import java.util.concurrent.Semaphore;
 
 public abstract class Resource {
@@ -12,20 +18,18 @@ public abstract class Resource {
         CategoryType = categoryType;
     }
 
-    public synchronized void reserve() throws InterruptedException {
-        while (this.semaphore.availablePermits() == 0) {
-            try {
-                wait(); //The calling thread waits until semaphore becomes free
-            } catch (InterruptedException e) {
-            }
-        }
-        this.semaphore.acquire();
+    public static synchronized void reserve() throws InterruptedException {
+        db.collection("Resources").document(String.valueOf(ROOM_CURSOR))
+                .update("Semaphore", FieldValue.increment(-1));
+        db.collection("Resources").document(String.valueOf(CAR_CURSOR))
+                .update("Semaphore", FieldValue.increment(-1));
     }
 
-    public synchronized void leave(int ID, boolean isRight, String c) {
-        this.semaphore.release();
-        notify();
-        System.out.println("Customer " + ID + " leaves the resource: " + c);
+    public static synchronized void leave() {
+        db.collection("Resources").document(String.valueOf(ROOM_CURSOR))
+                .update("Semaphore", FieldValue.increment(1));
+        db.collection("Resources").document(String.valueOf(CAR_CURSOR))
+                .update("Semaphore", FieldValue.increment(1));
     }
 
     public int getCategoryType() {

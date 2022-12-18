@@ -64,24 +64,24 @@ public class CarAdapter extends RecyclerView.Adapter<CarAdapter.viewholder> {
             for (int i = 0; i <4 ; i++) {
                 if (cars.get(position).equals(ApplicationClass.resourceArrayList[i])){
                     DocumentReference dc = db.collection("Resources").document(String.valueOf(i));
+                    int finalI = i;
                     dc.get().addOnCompleteListener(task -> {
                         if (task.isSuccessful()) {
                             DocumentSnapshot document = task.getResult();
                             if (document != null) {
                                 count[0] = Integer.parseInt(document.get("Semaphore").toString());
+                                if (count[0] > 0) {
+                                    CAR_FLAG = true;
+                                    CAR_CURSOR = finalI;
+                                    System.out.println(currentUser.getName() + "Clicked ");
+                                }
+                                else if (count[0] == 0)
+                                    Toast.makeText(context, "Not Available!", Toast.LENGTH_SHORT).show();
                             }
                         }
                 });
                     System.out.println("Cars.Get() Passed");
-                    if (count[0] > 0){
-                        CAR_FLAG = true;
-                        CAR_CURSOR = i;
-//                        db.collection("Resources").document(String.valueOf(i))
-//                                .update("Semaphore", FieldValue.increment(-1));
-                        System.out.println(currentUser.getName() + "Clicked ");
-                    }
-                    else
-                        Toast.makeText(context, "Not Available", Toast.LENGTH_SHORT).show();
+
                 }
             }
         });

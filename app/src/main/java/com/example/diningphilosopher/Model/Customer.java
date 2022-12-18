@@ -1,9 +1,14 @@
 package com.example.diningphilosopher.Model;
 
 
+import static com.example.diningphilosopher.ApplicationClass.CAR_FLAG;
+import static com.example.diningphilosopher.ApplicationClass.ROOM_FLAG;
 import static com.example.diningphilosopher.RoomsAdapter.ROOM_CURSOR;
 import static com.example.diningphilosopher.ApplicationClass.db;
 import static com.example.diningphilosopher.CarAdapter.CAR_CURSOR;
+
+import android.content.Context;
+import android.widget.Toast;
 
 import com.example.diningphilosopher.ApplicationClass;
 import com.google.firebase.firestore.FieldValue;
@@ -18,7 +23,7 @@ public class Customer extends Thread {
     private Resource[] resources;
     private int MatchingRoomType;
     private int MatchingCarType;
-
+    public Context context;
 
     public Customer (){
 
@@ -93,19 +98,24 @@ public class Customer extends Thread {
 
     @Override
     public void run() {
-            db.collection("Resources").document(String.valueOf(ROOM_CURSOR))
-                    .update("Semaphore", FieldValue.increment(-1));
-            db.collection("Resources").document(String.valueOf(CAR_CURSOR))
-                    .update("Semaphore", FieldValue.increment(-1));
+        if (canReserve()){
+            try {
+                Resource.reserve();
+                Toast.makeText(this.context, "Reserved!", Toast.LENGTH_SHORT).show();
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
             try {
                 Thread.sleep(5000);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
-            db.collection("Resources").document(String.valueOf(ROOM_CURSOR))
-                    .update("Semaphore", FieldValue.increment(1));
-            db.collection("Resources").document(String.valueOf(CAR_CURSOR))
-                    .update("Semaphore", FieldValue.increment(1));
+            Resource.leave();
+            ROOM_FLAG = CAR_FLAG = false;
+            ROOM_CURSOR = CAR_CURSOR = -1;
+            Toast.makeText(this.context, "Trip Finished!", Toast.LENGTH_SHORT).show();
+        }
+
 
     }
 
@@ -119,7 +129,7 @@ public class Customer extends Thread {
     }
 
     public boolean canReserve() {
-        return (this.getRight(ID).semaphore.availablePermits() == 1 && this.getLeft(ID).semaphore.availablePermits() == 1);
+        return (ROOM_FLAG && CAR_FLAG);
     }
 
     public int getID() {
@@ -148,40 +158,4 @@ public class Customer extends Thread {
 
 
 
-//        System.out.println("Customer " + ID + " entered the website");
-//        try {
-//            Thread.sleep(new Random().nextInt(100) + 50);
-//        } catch (InterruptedException e) {
-//            e.printStackTrace();
-//        }
-//        System.out.println("Customer " + ID + " wants to reserve.");
-//        if (canReserve()) {
-//            try {
-//                resources[ID].reserve();
-//            } catch (InterruptedException e) {
-//                throw new RuntimeException(e);
-//            }
-//            System.out.println("Customer " + ID + "  reserved the : " + resources[ID].getClass().getSimpleName());
-//            try {
-//                resources[(ID + 1) % ApplicationClass.no_of_customers].reserve();
-//            } catch (InterruptedException e) {
-//                throw new RuntimeException(e);
-//            }
-//            System.out.println("Customer " + ID + "  reserved the resource : " + resources[(ID + 1) % ApplicationClass.no_of_customers].getClass().getSimpleName());
-//            System.out.println("Customer " + ID + " reservation done");
-//            try {
-//                Thread.sleep(new Random().nextInt(100) + 50);
-//            } catch (InterruptedException e) {
-//                e.printStackTrace();
-//            }
-//            resources[ID].leave(ID, true, resources[ID].getClass().getSimpleName());// release right chopstick
-//            resources[(ID + 1) % ApplicationClass.no_of_customers].leave(ID, false, resources[(ID + 1) % ApplicationClass.no_of_customers].getClass().getSimpleName());//release left chopstick
-//            try {
-//                Thread.sleep(new Random().nextInt(100) + 50);
-//            } catch (InterruptedException e) {
-//                e.printStackTrace();
-//            }
-//        } else
-//            System.out.println("Resources for Customer " + ID + " are reserved");
-//    }
 }

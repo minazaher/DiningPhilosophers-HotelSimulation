@@ -11,6 +11,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -60,20 +61,25 @@ public class RoomsAdapter extends RecyclerView.Adapter<RoomsAdapter.viewholder> 
             for (int i = 0; i <4 ; i++) {
                 if (rooms.get(position).equals(ApplicationClass.resourceArrayList[i])){
                     DocumentReference dc = db.collection("Resources").document(String.valueOf(i));
+                    int finalI = i;
                     dc.get().addOnCompleteListener(task -> {
                         if (task.isSuccessful()) {
                             DocumentSnapshot document = task.getResult();
                             if (document != null) {
                                 count[0] = Integer.parseInt(document.get("Semaphore").toString());
                             }
+                            if (count[0] > 0){
+                                ROOM_FLAG = true;
+                                ROOM_CURSOR = finalI;
+                                System.out.println(currentUser.getName() + "Clicked ");
+                            }
+                            else if (count[0] == 0)
+                                Toast.makeText(context, "Not Available!", Toast.LENGTH_SHORT).show();
                         }
                     });
                     System.out.println("Rooms.Get() Passed");
-                    if (count[0] > 0){
-                        ROOM_FLAG = true;
-                        ROOM_CURSOR = i;
-                        System.out.println(currentUser.getName() + "Clicked ");
-                    }
+
+
                 }
             }
         });

@@ -26,12 +26,14 @@ import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.diningphilosopher.ApplicationClass;
 import com.example.diningphilosopher.CarAdapter;
 import com.example.diningphilosopher.Model.Car;
 import com.example.diningphilosopher.Model.Room;
 import com.example.diningphilosopher.R;
 import com.example.diningphilosopher.RoomsAdapter;
 import com.google.android.gms.tasks.Task;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 
@@ -40,7 +42,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 public class ReservationActivity extends AppCompatActivity {
     LinearLayout btn_profile;
-    ConstraintLayout constraintLayout_start;
+    FloatingActionButton constraintLayout_start;
     TextView tv_Hi, tv_categories, tv_popular;
     RecyclerView Cars, Rooms;
     EditText et_search;
@@ -51,6 +53,7 @@ public class ReservationActivity extends AppCompatActivity {
         for (int i = 0; i < 4; i++) {
             if (resourceArrayList[i].getClass().getSimpleName().equals("Room")) {
                 if (currentUser.getMatchingRoomType() == resourceArrayList[i].getCategoryType()) {
+                    // For Testing
                     System.out.println("Room Category Type :" + resourceArrayList[i].getCategoryType());
                     System.out.println("Simple Name : " + resourceArrayList[i].getClass().getSimpleName());
                     System.out.println("Rooms : " + resourceArrayList[i].toString());
@@ -67,6 +70,7 @@ public class ReservationActivity extends AppCompatActivity {
         for (int i = 0; i < 4; i++) {
             if (resourceArrayList[i].getClass().getSimpleName().toString().equals("Car")) {
                 if (currentUser.getMatchingCarType() == resourceArrayList[i].getCategoryType()) {
+                    // For Testing
                     System.out.println("Car Category Type :" + resourceArrayList[i].getCategoryType());
                     System.out.println("Simple Name " + resourceArrayList[i].getClass().getSimpleName());
                     System.out.println("Cars : " + resourceArrayList[i].toString());
@@ -87,6 +91,7 @@ public class ReservationActivity extends AppCompatActivity {
                 DocumentSnapshot document = task.getResult();
                 if (document.exists()) {
                     count.set(parseInt(document.get("Semaphore").toString()));
+                    // for testing
                     System.out.println("******* COUNT FROM FIRESTORE : " + count);
                 }
 
@@ -129,27 +134,12 @@ public class ReservationActivity extends AppCompatActivity {
 
         initializeUI();
         tv_Hi.setText("Hi " + currentUser.getN());
+        ApplicationClass.currentUser.context = this;
 
-        constraintLayout_start.setOnClickListener(view ->
-        {
-            if (ROOM_FLAG && CAR_FLAG){
-                currentUser.start();
-                Toast.makeText(this, "لولولولولي", Toast.LENGTH_SHORT).show();
-                try {
-                    currentUser.join();
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
-                ROOM_FLAG = CAR_FLAG = false;
-                ROOM_CURSOR = CAR_CURSOR = -1;
-
-                Toast.makeText(this, "فداهية!", Toast.LENGTH_SHORT).show();
-            }
-
-
+        constraintLayout_start.setOnClickListener(view -> {
+                currentUser.run();
 
         });
-
         recyclerViewCars();
         recyclerViewRooms();
 
@@ -181,7 +171,7 @@ public class ReservationActivity extends AppCompatActivity {
         tv_Hi = findViewById(R.id.tv_Hi);
         tv_categories = findViewById(R.id.tv_categories);
         tv_popular = findViewById(R.id.tv_popular);
-        constraintLayout_start = findViewById(R.id.constraintLayout_reserve);
+        constraintLayout_start = findViewById(R.id.fab_cart);
         et_search = findViewById(R.id.et_search);
     }
 
